@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Work+Sans:wght@100;300;400;600;800&display=swap');
+
+*{
+	box-sizing: border-box;
+	font-family: 'Work sans';
+	margin: 0;
+	padding: 0;
+}
+
+html{
+	scroll-behavior: smooth;
+}
+
+/*MENU*/
+/*el div que contiene los elementos del header
+le damos un fondo y aseguramos que ocupe la pantalla*/
+.contenedor-header{
+	background: #1e2326;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left:0;
+	z-index: 99;/*elementos apliados*/
+}
+/*contenedor del header*/
+.contenedor-header header{
+	max-width: 1100px;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 20px;
+}
+
+/*contenedor de logo*/
+.contenedor-header header .logo a{
+	font-family: 'Righteous';
+	font-size: 36px;
+	color: #0b4ad1;
+	text-decoration: none;
+}
+
+/*la lista no sera de arriba a abajo, ahora sera: elemento ---- elemento ----- elemento*/
+.contenedor-header header ul{
+	display: flex;
+	list-style: none;
+}
+
+/*le decimos a los enlaces que van a estar de color blanco sin decoracion de texto, deduce lo demas*/
+.contenedor-header header nav ul li a{
+	text-align: none;
+	color: #fff;
+	margin: 0 15px;
+	padding: 3px;
+	transition: .5s;
+	text-decoration: none;
+}
+
+/*le agregamos un color cuando pongamos el raton*/
+.contenedor-header header nav ul li a:hover{
+	color: #0b4ad1;
+}
+
+/*el logo de menu hamburguesa*/
+.nav-responsive{
+	background-color: #0b4ad1;
+	color: #fff;
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	display: none; /*estara pero no se vera*/
+}
