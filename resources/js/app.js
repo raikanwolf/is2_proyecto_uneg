@@ -1,13 +1,24 @@
 import './bootstrap';
-import { createApp } from 'vue'
-import router from './router.js'
+import '../css/app.css';
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
-//aqui se importan componentes
-import app from './components/app.vue'
-import navbar from './components/navbar.vue'
-import heroSection from './components/login.vue'
 
-createApp (app).use(router).mount('#app')
-Vue.component('login-component', require('./components/Login.vue').default);
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'UNEG';
 
-//revisar welcome.blade.php en la carpeta views dentro de resources, alli llamamos este archivo
+
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(ZiggyVue, Ziggy)
+            .mount(el);
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});

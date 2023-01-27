@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>UNEG</title>
-	<!--componentes propios css-->
-    @vite(['resources/css/app.css'])
-    <link rel="stylesheet" href="{{asset('css/login.css')}}">
-    <link rel="stylesheet" href="{{asset('css/navbar.css')}}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-	<div id="app">
+        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+
+        <!-- Scripts -->
+        @routes
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @inertiaHead
+    </head>
+    <body class="font-sans antialiased">
+        @inertia
         
-	</div>
-        <!--llamamos a app.js-->
-        <!--v a resources cappeta js luego layouts app.vue es la primera vista-->
-</body>
+    </body>
+    
 </html>
-
-
