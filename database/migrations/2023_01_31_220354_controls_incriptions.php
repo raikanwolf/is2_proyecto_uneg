@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('incriptions', function (Blueprint $table) {
+        Schema::create('controls_incriptions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->date('fecha');
+            $table->unsignedBigInteger('incription_id');
+            $table->unsignedBigInteger('course_id');
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('incription_id')->references('id')->on('inscriptions');
+            $table->foreign('cource_id')->references('id')->on('courses');
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incriptions');
+        Schema::dropIfExists('controls_incriptions');
     }
 };

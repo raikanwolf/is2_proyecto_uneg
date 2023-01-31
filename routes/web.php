@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InscripcionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,5 +39,7 @@ Route::middleware('auth')->group(function () {
 });
 //la primera es la direccion de la pagina \about la segunda es el nombre del archivo respectivo vue que esta dentro de la carpeta pages
 Route::inertia('about','about');
+
+Route::get('/todos', [InscripcionController::class, 'todos'])->name('ins.todos');
 
 require __DIR__.'/auth.php';
