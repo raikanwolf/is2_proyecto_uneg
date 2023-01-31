@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('semester_id');
+            $table->unsignedBigInteger('semester_id');
+            $table->unsignedBigInteger('career_id');
             $table->date('date_admission');
             $table->string('status');
             $table->timestamps();
 
             $table->foreign('id')->references('id')->on('persons');
+            $table->foreign('semester_id')->references('id')->on('semesters');
+            $table->foreign('career_id')->references('id')->on('careers');
         });
     }
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('day');
             $table->time('entry_time');
-            $table->date('week');
+            $table->time('departure_time');
             $table->timestamps();
         });
     }
