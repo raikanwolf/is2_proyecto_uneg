@@ -17,12 +17,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('professor_id');
             $table->unsignedBigInteger('section_id');
+            $table->unsignedBigInteger('careers_id');
             $table->unsignedBigInteger('schedules_id');
             $table->string('course_type');
             $table->integer('credit_units');
             $table->timestamps();
 
             $table->foreign('professor_id')->references('id')->on('professors');
+            $table->foreign('careers_id')->references('id')->on('careers');
             $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('schedules_id')->references('id')->on('schedules');
         });

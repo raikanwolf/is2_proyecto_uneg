@@ -1,29 +1,28 @@
-<h1>Mostrando todos los datos</h1>
+<h1>Inscripciones 2023</h1>
+<h2>Seleccione las asignaturas que va a inscribir este semestre </h2>
+<div class="">
+    <div class="">    
+        <form action="{{route('inscon.inscribir')}}" method="post">
+            {{ csrf_field() }}
 
-@foreach($asignaturas as $asi)
+            @foreach($nombre_asi as $asi)
 
-    {{$asi->course_type}}<br/>
-    {{$asi->course_credit_units}}<br/>
+                
+            <label><input type="checkbox" name="nombres[]" value="{{$asi->course_type}}"> {{$asi->course_type  }} </label><br>
+            <label for="tipo">Seccion</label>
+            <br/> <select name="seccion[]">
+                @for($i = 0; $i<= $asi->secciones; $i++)
+                    <option value="Seccion {{ $i}}">
+                        {{"Seccion $i"}} 
+                    </option>
+                @endfor
+            </select>
+            <br/>
 
-@endforeach
-
-@foreach($inscripciones as $ins)
-
-    {{$ins->fecha}}<br/>
-    {{$ins->student_id}}<br/>
-
-@endforeach
-
-@foreach($estudiantes as $es)
-
-    {{$es->status}}<br/>
-    {{$es->semester_id}}<br/>
-
-@endforeach
+            @endforeach
+            <input type="submit" name="submit" value="Enviar"/>
+        </form>
+    </div>
+</div>
 
 
-@foreach($control as $con)
-
-    {{$con->incription_id .'-'. $con->course_id  }}<br/>
-
-@endforeach

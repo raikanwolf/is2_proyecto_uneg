@@ -11,7 +11,7 @@ class Estudiante extends Model
 
     protected $table = 'students';
     
-    public function inscripcion(){
+    public function inscripcion_estudiante(){
         return $this->hasMany('App\Models\Inscripcion');
     }
 

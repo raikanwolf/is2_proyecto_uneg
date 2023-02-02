@@ -11,10 +11,10 @@ class Control_inscripcion extends Model
 
     protected $table = 'controls_incriptions';
 
-    public function asignaturas_ins(){
+    public function asignaturas_control_ins(){
         return $this->belongsTo('App\Models\Asignatura', 'course_id');
     }
-    public function inscripcion_ins(){
+    public function inscripcion_control_ins(){
         return $this->belongsTo('App\Models\Inscripcion', 'incription_id');
     }
     

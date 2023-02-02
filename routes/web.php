@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
 //la primera es la direccion de la pagina \about la segunda es el nombre del archivo respectivo vue que esta dentro de la carpeta pages
 Route::inertia('about','about');
 
-Route::get('/todos', [InscripcionController::class, 'todos'])->name('ins.todos');
+Route::get('/inscripcion', [InscripcionController::class, 'ver_inscripcion'])->name('inscon_inscripcion');
+Route::post('/enviar', [InscripcionController::class, 'inscribir'])->name('inscon.inscribir');
+
 
 require __DIR__.'/auth.php';

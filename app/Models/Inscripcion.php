@@ -12,11 +12,11 @@ class Inscripcion extends Model
     protected $table = 'incriptions';
 
       
-    public function control_inscripcion(){
+    public function control_inscripcion_ins(){
         return $this->hasMany('App\Models\Control_inscripcion');
     }
     
-    public function Estudiante_ins(){
+    public function estudiante_ins(){
         return $this->belongsTo('App\Models\Estudiante', 'student_id');
     }
 }
