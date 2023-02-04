@@ -32,6 +32,10 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <NavLink 
+                                href="/people/create"
+                                    class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline"
+                                    >Registrar Persona</NavLink>
                             </div>
                         </div>
 
