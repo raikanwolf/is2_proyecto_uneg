@@ -11,12 +11,90 @@ import { Head } from '@inertiajs/vue3';
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
+       <section id="sobremi" class="sobremi">
+            <div class="contenido-seccion">
+                <h2>Sobre Mi</h2>
+                <p><span>Hola soy Helvis</span> Lorem ipsum, dolor sit amet consectetur, adipisicing elit. Exercitationem omnis officia explicabo porro itaque illum, architecto maiores iure impedit quod dolorem ea placeat odio vero culpa voluptatem quos, consequuntur molestias.</p>
+
+                <div class="fila">
+                    <!--datos personales-->
+                    <div class="col">
+                        <h3>Datos Pesonales</h3>
+                        <ul>
+                            <li>
+                                <strong>Cumpleaños</strong>
+                                07-07-1998
+                            </li>
+                            <li>
+                                <strong>Telefono</strong>
+                                +58-424-9162687
+                            </li>
+                            <li>
+                                <strong>Website</strong>
+                                example.com
+                            </li>
+                            <li>
+                                <strong>Direccion</strong>
+                                Una direccion cualquiera
+                            </li>
+                            <li>
+                                <strong>Cargo</strong>
+                                <span>FREELANCE</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!--intereses-->
+                    <div class="col">
+                        <h3>Intereses</h3>
+                        <div class="contenedor-intereses">
+                            <div class="intereses">
+                                <i class="fa-solid fa-gamepad"></i>
+                                <a href="#"><span>JUEGOS</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-book"></i>
+                                <a href="#"><span>HISTORIAS</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-puzzle-piece"></i>
+                                <a href="#"><span>ACERTIJOS</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <a href="#"><span>ENIGMAS</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-tv"></i>
+                                <a href="#"><span>SERIES</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-chess-rook"></i>
+                                <a href="#"><span>AJEDREZ</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-dragon"></i>
+                                <a href="#"><span>FANTASIA</span></a>
+                            </div>
+
+                            <div class="intereses">
+                                <i class="fa-solid fa-flask"></i>
+                                <a href="#"><span>CIENCIA</span></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <button>
+                    descargar CV <i class="fa-solid fa-download"></i>
+                    <span class="overlay"></span>
+                </button>
             </div>
-        </div>
+        </section>
     </AuthenticatedLayout>
 </template>
