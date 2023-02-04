@@ -12,6 +12,6 @@ class Semestre extends Model
     protected $table = 'semesters';
 
     public function secciones_semestre(){
-        return $this->hasMany('App\Models\Seccion');
+        return $this->hasMany('App\Models\Seccion', 'semesters_id');
     }
 }

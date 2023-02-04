@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
 Route::inertia('about','about');
 
 Route::get('/inscripcion', [InscripcionController::class, 'ver_inscripcion'])->name('inscon_inscripcion');
-Route::post('/enviar', [InscripcionController::class, 'inscribir'])->name('inscon.inscribir');
+Route::post('/enviar', [InscripcionController::class, 'mostrar'])->name('inscon.inscribir');
 
 
 require __DIR__.'/auth.php';

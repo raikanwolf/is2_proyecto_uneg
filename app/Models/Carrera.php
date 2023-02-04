@@ -12,11 +12,11 @@ class Carrera extends Model
     protected $table = 'careers';
 
     public function estudiante_carrera(){
-        return $this->hasMany('App\Models\Estudiante');
+        return $this->hasMany('App\Models\Estudiante' ,'career_id');
     }
     
     public function seccion_carrera(){
-        return $this->hasMany('App\Models\Seccion');
+        return $this->hasMany('App\Models\Seccion', 'career_id');
     }
 
 }

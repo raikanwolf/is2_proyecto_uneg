@@ -13,7 +13,7 @@ class Inscripcion extends Model
 
       
     public function control_inscripcion_ins(){
-        return $this->hasMany('App\Models\Control_inscripcion');
+        return $this->hasMany('App\Models\Control_inscripcion', 'incription_id');
     }
     
     public function estudiante_ins(){

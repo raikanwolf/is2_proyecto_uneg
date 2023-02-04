@@ -11,9 +11,12 @@
             <label><input type="checkbox" name="nombres[]" value="{{$asi->course_type}}"> {{$asi->course_type  }} </label><br>
             <label for="tipo">Seccion</label>
             <br/> <select name="seccion[]">
-                @for($i = 0; $i<= $asi->secciones; $i++)
-                    <option value="Seccion {{ $i}}">
-                        {{"Seccion $i"}} 
+                <option value="no" selected>
+                    Elija la seccion 
+                </option>
+                @for($i = 1; $i<= $asi->secciones; $i++)
+                    <option value="Seccion {{$i}}">
+                        Seccion{{"$i"}} 
                     </option>
                 @endfor
             </select>

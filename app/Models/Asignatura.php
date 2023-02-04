@@ -13,7 +13,7 @@ class Asignatura extends Model
 
       
     public function control_inscripcion_asignatura(){
-        return $this->hasMany('App\Models\Control_inscripcion');
+        return $this->hasMany('App\Models\Control_inscripcion', 'course_id');
     }
 
     public function seccion(){

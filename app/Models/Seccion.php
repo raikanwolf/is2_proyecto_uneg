@@ -12,7 +12,7 @@ class Seccion extends Model
     protected $table = 'sections';
 
     public function asignaturas_secciones(){
-        return $this->hasMany('App\Models\Asignatura');
+        return $this->hasMany('App\Models\Asignatura', 'course_id');
     }
 
     public function semestres_secciones(){
