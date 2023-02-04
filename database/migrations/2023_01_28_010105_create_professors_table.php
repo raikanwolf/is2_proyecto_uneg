@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('professor_type');
             $table->timestamps();
             
-            $table->foreign('id')->references('id')->on('persons');
+            $table->foreign('id')->references('id')->on('people');
         });
     }
 

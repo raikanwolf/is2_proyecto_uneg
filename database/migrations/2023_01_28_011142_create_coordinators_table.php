@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date_admission');
             $table->timestamps();
             
-            $table->foreign('id')->references('id')->on('persons');
+            $table->foreign('id')->references('id')->on('people');
         });
     }
 
