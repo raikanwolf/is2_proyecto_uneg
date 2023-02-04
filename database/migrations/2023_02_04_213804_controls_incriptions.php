@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
-            $table->string('day');
-            $table->time('entry_time');
-            $table->time('departure_time');
-            $table->timestamps();
-        });
+        $table->id();
+        $table->unsignedBigInteger('incription_id');
+        $table->unsignedBigInteger('course_id');
+        $table->timestamps();
+
+        $table->foreign('incription_id')->references('id')->on('incriptions');
+        $table->foreign('cource_id')->references('id')->on('courses');
     }
 
     /**
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('controls_incriptions');
     }
 };

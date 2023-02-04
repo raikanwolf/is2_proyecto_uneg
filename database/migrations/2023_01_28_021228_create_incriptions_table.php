@@ -15,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('incriptions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('student_id');
+            $table->date('fecha');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses');
             $table->foreign('student_id')->references('id')->on('students');
         });
     }

@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class student extends Model
 {
     use HasFactory;
+
+    protected $table = 'students';
+    
+    public function inscripcion_estudiante(){
+        return $this->hasMany('App\Models\Incription', 'student_id');
+    }
 }

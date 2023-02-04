@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('career_id');
+            $table->unsignedBigInteger('semesters_id');
             $table->string('section_number');
             $table->timestamps();
 
             $table->foreign('career_id')->references('id')->on('careers');
+            $table->foreign('semesters_id')->references('id')->on('semesters');
         });
     }
 
