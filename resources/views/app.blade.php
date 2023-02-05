@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>UNEG</title>
 	<!--componentes propios css-->
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/styles.css'])
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
     <link rel="stylesheet" href="{{asset('css/navbar.css')}}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite( ['resources/js/main.js'])
 </head>
 <body>
 	<div id="app">
