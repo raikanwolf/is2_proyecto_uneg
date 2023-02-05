@@ -33,9 +33,15 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink 
+                                    href="/register"
+                                    >Registrar user</NavLink>
+                                <NavLink 
                                 href="/people/create"
-                                    class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline"
-                                    >Registrar Persona</NavLink>
+                                    >Registrar persona</NavLink>
+                                <NavLink 
+                                    href="/professors/create"
+                                    >Registrar profesor</NavLink>
+                                
                             </div>
                         </div>
 

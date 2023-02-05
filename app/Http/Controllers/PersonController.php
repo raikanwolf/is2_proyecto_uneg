@@ -64,7 +64,7 @@ class PersonController extends Controller
         ]);
         sleep(1);
 
-        return redirect()->route('people.index')->with('message', 'Person Created Successfully');
+        return redirect()->route('dashboard')->with('message', 'Person Created Successfully');
     }
 
     /**

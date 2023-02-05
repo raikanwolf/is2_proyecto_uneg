@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\http\Controllers\StudentController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ProfessorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,13 +30,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-Route::resource('people', PersonController::class);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('people', PersonController::class);
+    Route::resource('professors', ProfessorController::class);
     Route::get('/students',[StudentController::class,'index'])->name('students.index');
 });
 //la primera es la direccion de la pagina \about la segunda es el nombre del archivo respectivo vue que esta dentro de la carpeta pages
