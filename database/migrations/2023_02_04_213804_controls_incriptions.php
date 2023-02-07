@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        $table->id();
-        $table->unsignedBigInteger('incription_id');
-        $table->unsignedBigInteger('course_id');
-        $table->timestamps();
+        Schema::create('controls_incriptions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('incription_id');
+            $table->unsignedBigInteger('course_id');
+            $table->timestamps();
 
-        $table->foreign('incription_id')->references('id')->on('incriptions');
-        $table->foreign('cource_id')->references('id')->on('courses');
+            $table->foreign('incription_id')->references('id')->on('incriptions');
+            $table->foreign('course_id')->references('id')->on('courses');
+        });
     }
 
     /**

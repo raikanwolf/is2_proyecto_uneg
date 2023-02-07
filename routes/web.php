@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\http\Controllers\StudentController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\IncriptionsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('people', PersonController::class);
     Route::resource('professors', ProfessorController::class);
+    Route::resource('incriptions', IncriptionsController::class);
     Route::get('/students',[StudentController::class,'index'])->name('students.index');
 });
 //la primera es la direccion de la pagina \about la segunda es el nombre del archivo respectivo vue que esta dentro de la carpeta pages
