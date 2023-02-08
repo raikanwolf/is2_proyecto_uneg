@@ -16,11 +16,7 @@ use App\Models\Section;
 
 class IncriptionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   //Metodo que me muestra las asignaturas que tengo inscritas
     public function index()
     {
         $user = \Auth::user();
@@ -42,12 +38,7 @@ class IncriptionsController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
+  //Metodo que me muestra las asignaturas que puedo inscribir
     public function create()
     {
         $user = \Auth::user();
@@ -79,12 +70,8 @@ class IncriptionsController extends Controller
         
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  
+  //Metodo que me inscribe una asignatura
     public function store(Request $request)
     { 
         //Valida que lleguen los datos de las asignaturas a inscribir
@@ -142,10 +129,14 @@ class IncriptionsController extends Controller
             $estudiante->update();
     
             $materias_ins = mostrar_datos($id_user);
-            return redirect()->route('incriptions')->with('message', 'Inscripcion realizada correctamente');
+            return redirect()->route('incriptions.index')->with([
+                'message'=> 'Inscripcion realizada con exito'
+            ]);
 
         }else{
-            return redirect()->route('incriptions.create')->with('message', 'Error al realizar la inscripcion');
+            return redirect()->route('incriptions.create')->with([
+                'message'=> 'Error al realizar la inscripcion'
+            ]);
         }
     
     }
@@ -161,38 +152,71 @@ class IncriptionsController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    //Metodo que me dice si existe mas de una seccion
+    public function cambio($id_control, $nombre_asig, $carrera)
     {
-        //
+        $cambio = Course::where('course_type', $nombre_asig)->where('career_id', $carrera)->get();
+        //Comprobar que existe mas de una seccion
+        if(count($cambio)>1){
+            return view('Inscripcion.cambio',[
+                'asignatura' => $nombre_asig,
+                'cambio' => $cambio,
+                'control_id' => $id_control
+            ]);
+        }else{
+            return redirect()->route('incriptions.index')->with([
+                'message' => 'Esta asignatura solo posee una seccion'
+            ]);
+        }
+       
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+  ////Metodo que me cambia de seccion
+    public function seccion_ca(Request $request)
     {
-        //
+        $this->validate($request, [
+            'control_id' => 'required',
+            'seccion' => 'required',
+        ]);
+       
+        $id_control = $request->input('control_id');
+        $id_course = $request->input('seccion');
+        $control = Controls_incription::find($id_control);
+        $control->course_id = $id_course;
+        $control->update();
+
+        return redirect()->route('incriptions.index')->with([
+            'message' => 'Cambio realizado con exito!!'
+        ]);
+        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+  //Metodo para retirar una asignatura
+    public function delete($id_control, $id_ins)
     {
-        echo $id;
-        die();
+        
+        $control_inscripcion = Controls_incription::find($id_control);
+        $control_inscripcion->delete();
+        $inscrito = Controls_incription::where('incription_id', $id_ins)->get();
+        //Se verifica que el estudiante aun tenga materias inscritas
+        if(count($inscrito)>=1){
+            return redirect()->route('incriptions.index')->with([
+                'message'=> 'Asignatura retirada con exito'
+            ]);
+        }else{
+            //En caso de que ya no tenga materias inscritas hay que eliminar los registros de la BD
+            $user = \Auth::user();
+            $id_user = $user->id;
+            $estudiante = student::find($id_user);
+            $inscripcion = Incription::where('student_id', $estudiante->id)->first();
+            //Se elimina la inscripcion
+            $inscripcion->delete();
+            //Se actualiza su estado
+            $estudiante->status = 'No inscrito';
+            $estudiante->update();
+            return redirect()->route('incriptions.index')->with([
+                'message'=> 'Asignatura retirada con exito'
+            ]);
+        }
     }
 }

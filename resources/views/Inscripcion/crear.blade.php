@@ -6,7 +6,7 @@
     
     <div class="">   
         @if(isset($message))
-            {{$message}}
+            <p>{{$message}}</p>
         @endif 
         <form action="{{route('incriptions.store')}}" method="post">
             {{ csrf_field() }}

@@ -39,9 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('people', PersonController::class);
     Route::resource('professors', ProfessorController::class);
-    Route::resource('incriptions', IncriptionsController::class);
     Route::get('/students',[StudentController::class,'index'])->name('students.index');
 });
+//Rutas del controlador de inscripciones
+Route::resource('incriptions', IncriptionsController::class);
+Route::get('inscripciones/delete/{id_control}/{id_ins}', [IncriptionsController::class,'delete'])->name('inscripciones.delete');
+Route::get('inscripciones/cambio/{id_control}/{nombre_asig}/{carrera}', [IncriptionsController::class,'cambio'])->name('inscripciones.cambio');
+Route::post('inscripciones/update-seccion', [IncriptionsController::class,'seccion_ca'])->name('inscripciones.update_seccion');
+
 //la primera es la direccion de la pagina \about la segunda es el nombre del archivo respectivo vue que esta dentro de la carpeta pages
 Route::inertia('about','about');
 
