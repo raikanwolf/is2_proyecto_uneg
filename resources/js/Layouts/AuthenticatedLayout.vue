@@ -42,6 +42,9 @@ const showingNavigationDropdown = ref(false);
                                     href="/professors/create"
                                     >Registrar profesor</NavLink>
                                     <NavLink 
+                                    href="/incriptions"
+                                    >Ver Datos</NavLink>
+                                    <NavLink 
                                     href="/incriptions/create"
                                     >Inscribir</NavLink>
                                 
