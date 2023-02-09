@@ -49,12 +49,7 @@ class IncriptionsController extends Controller
 
             $carrera_estudiante = $estudiante->career_id;
             //Se busca las asignaturas que corresponadan con la carrera del estudiante
-            $nombre_asignaturas = DB:: table('courses')
-            ->selectRaw("course_type, career_id, COUNT(course_type) as secciones")
-            ->where('career_id', $carrera_estudiante)
-            ->groupBy('course_type','career_id')
-            ->get();
-        
+            $nombre_asignaturas = asignaturas_carreras($carrera_estudiante);
             
             return view('Inscripcion.crear', [
                 'nombre_asi' => $nombre_asignaturas
@@ -87,41 +82,27 @@ class IncriptionsController extends Controller
         $fecha = date('Y-m-d');
         $estudiante = student::find($id_user);
     
-        //Añadiendo a la tabla inscripcion
-        $inscripcion = new Incription();
-        $inscripcion->student_id = $id_user;
-        $inscripcion->fecha = $fecha;
-        $inscripcion->save();
+        //Comprobando que este estudiante no tiene inscripciones
+        $estudiante_inscrito = Incription::where('student_id', $id_user)->first();
+        if(empty($estudiante_inscrito)){
+            //Añadiendo a la tabla inscripcion
+        
+            $inscripcion = new Incription();
+            $inscripcion->student_id = $id_user;
+            $inscripcion->fecha = $fecha;
+            $inscripcion->save();
+            //obtengo el id de la ultima inscripcion
+            $ultima_inscripcion = Incription:: latest('id')->limit(1)->first();
+            $id_inscripcion = $ultima_inscripcion->id;
     
-        //obtengo el id de la ultima inscripcion
-        $ultima_inscripcion = Incription:: latest('id')->limit(1)->first();
-        $id_inscripcion = $ultima_inscripcion->id;
-        
-        $carrera_estudiante = $estudiante->career_id;
-        $semestre_estudiante = $estudiante->semester_id;
-        
+        }else{
+            $id_inscripcion = $estudiante_inscrito->id;
+        }
+            
         //Se obtiene los datos de las materias y secciones
         $nombres = $request->input('nombres');
         $seccion = $request->input('seccion');
-        $cont=0;
-        
-        for($i=0; $i < count($seccion); $i++){
-                
-            if($seccion[$i] != 'no'){
-                //Se busca el id de la seccion
-                $seccion_id = Section:: where('career_id', $carrera_estudiante)->where('semesters_id', $semestre_estudiante)
-                ->where('section_number', $seccion[$i])->first();
-                //Se busa el id de la asignatura
-                $asignatura = Course:: where('section_id', $seccion_id->id)->where('course_type', $nombres[$cont])->first();
-                $cont++;
-                //Se crea el nuevo registro por cada materia inscrita 
-                $control_inscripcion = new Controls_incription();
-                $control_inscripcion->incription_id = $id_inscripcion;
-                $control_inscripcion->course_id = $asignatura->id;
-                $control_inscripcion->save();
-
-            }
-        }
+        $cont = save_control_inscripcion($estudiante, $nombres, $seccion, $id_inscripcion);
         if($cont >=1){
             
             //Se cambia el status del estudiante
@@ -129,9 +110,13 @@ class IncriptionsController extends Controller
             $estudiante->update();
     
             $materias_ins = mostrar_datos($id_user);
-            return redirect()->route('incriptions.index')->with([
-                'message'=> 'Inscripcion realizada con exito'
+            
+            return view('Inscripcion.ver_datos', [
+                'asignaturas' => $materias_ins
+            ])->with([
+                'message'=> 'La inscripcion se ha realizado con exito!!'
             ]);
+
 
         }else{
             return redirect()->route('incriptions.create')->with([
@@ -141,20 +126,102 @@ class IncriptionsController extends Controller
     
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+   
+    public function adicionar()
     {
-        //
+    
+        $user = \Auth::user();
+        $id_user = $user->id;
+        $estudiante = student::find($id_user);
+        $carrera_estudiante = $estudiante->career_id;
+        $nombre_asignaturas = asignaturas_carreras($carrera_estudiante);
+        $inscripcion = Incription::where('student_id', $estudiante->id)->first();
+        $datos = $inscripcion->control_inscripcion_ins;
+        $adicion_asig = '';
+        $adicion = array();
+        $cont = 0;
+        $ban = false;
+        foreach ($nombre_asignaturas as $asignatura) {
+            
+            $adicion_asig = $asignatura->course_type;
+            
+            foreach ($datos as $data) {
+            
+                $asig_inscrita = $data->asignaturas_control_ins->course_type;
+                if($adicion_asig == $asig_inscrita){
+                    $ban = true;
+                }
+            }
+            if(!$ban){
+                $adicion[$cont] = asignaturas_carreras_adicion($carrera_estudiante, $adicion_asig);
+                $cont++;
+            }
+            $ban=false;
+        }
+        if($cont>=1){
+            return view('Inscripcion.adicionar', [
+                'nombre_asi' => $adicion,
+                'id_ins' => $inscripcion->id,
+                'cont' => $cont
+            ]);
+        }else{
+            
+            $materias_ins = mostrar_datos($id_user);
+            
+            return view('Inscripcion.ver_datos', [
+                'asignaturas' => $materias_ins
+            ])->with([
+                'message'=> 'No se encuentran asignaturas disponibles para la adicion'
+            ]);
+        }
+        
+
     }
+
+    public function save_adicion(Request $request){
+        
+        $this->validate($request, [
+            'nombres' => 'required|array',
+            'seccion' => 'required|array',
+            'id_ins' => 'required'
+        ]);
+
+        $user = \Auth::user();
+        $id_user = $user->id;
+
+        $estudiante = student::find($id_user);
+        
+        //Se obtiene los datos de las materias y secciones
+        $nombres = $request->input('nombres');
+        $seccion = $request->input('seccion');
+        $id_inscripcion = $request->input('id_ins');
+        $cont = save_control_inscripcion($estudiante, $nombres, $seccion, $id_inscripcion);
+        if($cont >=1){
+
+            $materias_ins = mostrar_datos($id_user);
+            
+            return view('Inscripcion.ver_datos', [
+                'asignaturas' => $materias_ins
+            ])->with([
+                'message'=> 'La asignatura se ha adicionado con exito!!'
+            ]);
+
+        }else{
+            return redirect()->route('inscripciones.adicionar')->with([
+                'message'=> 'Error al realizar la adicion'
+            ]);
+        }
+        
+    }
+
+
 
     //Metodo que me dice si existe mas de una seccion
     public function cambio($id_control, $nombre_asig, $carrera)
     {
+        $user = \Auth::user();
+        $id_user = $user->id;
+
         $cambio = Course::where('course_type', $nombre_asig)->where('career_id', $carrera)->get();
         //Comprobar que existe mas de una seccion
         if(count($cambio)>1){
@@ -164,8 +231,12 @@ class IncriptionsController extends Controller
                 'control_id' => $id_control
             ]);
         }else{
-            return redirect()->route('incriptions.index')->with([
-                'message' => 'Esta asignatura solo posee una seccion'
+            $materias_ins = mostrar_datos($id_user);
+            
+            return view('Inscripcion.ver_datos', [
+                'asignaturas' => $materias_ins
+            ])->with([
+                'message'=> 'Esta asignatura solo posee una seccion...'
             ]);
         }
        
@@ -178,15 +249,21 @@ class IncriptionsController extends Controller
             'control_id' => 'required',
             'seccion' => 'required',
         ]);
-       
+        $user = \Auth::user();
+        $id_user = $user->id;
+
         $id_control = $request->input('control_id');
         $id_course = $request->input('seccion');
         $control = Controls_incription::find($id_control);
         $control->course_id = $id_course;
         $control->update();
 
-        return redirect()->route('incriptions.index')->with([
-            'message' => 'Cambio realizado con exito!!'
+        $materias_ins = mostrar_datos($id_user);
+            
+        return view('Inscripcion.ver_datos', [
+            'asignaturas' => $materias_ins
+        ])->with([
+            'message'=> 'Cambio de seccion realizado con exito!!'
         ]);
         
     }
@@ -194,14 +271,20 @@ class IncriptionsController extends Controller
   //Metodo para retirar una asignatura
     public function delete($id_control, $id_ins)
     {
-        
+        $user = \Auth::user();
+        $id_user = $user->id;
+
         $control_inscripcion = Controls_incription::find($id_control);
         $control_inscripcion->delete();
         $inscrito = Controls_incription::where('incription_id', $id_ins)->get();
         //Se verifica que el estudiante aun tenga materias inscritas
         if(count($inscrito)>=1){
-            return redirect()->route('incriptions.index')->with([
-                'message'=> 'Asignatura retirada con exito'
+            $materias_ins = mostrar_datos($id_user);
+            
+            return view('Inscripcion.ver_datos', [
+                'asignaturas' => $materias_ins
+            ])->with([
+                'message'=> 'Asignatura retirada con exito!!'
             ]);
         }else{
             //En caso de que ya no tenga materias inscritas hay que eliminar los registros de la BD
@@ -214,8 +297,9 @@ class IncriptionsController extends Controller
             //Se actualiza su estado
             $estudiante->status = 'No inscrito';
             $estudiante->update();
-            return redirect()->route('incriptions.index')->with([
-                'message'=> 'Asignatura retirada con exito'
+            
+            return view('Inscripcion.ver_datos')->with([
+                'message'=> 'Asignatura retirada con exito!!'
             ]);
         }
     }

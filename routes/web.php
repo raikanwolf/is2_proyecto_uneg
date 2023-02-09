@@ -45,7 +45,10 @@ Route::middleware('auth')->group(function () {
 Route::resource('incriptions', IncriptionsController::class);
 Route::get('inscripciones/delete/{id_control}/{id_ins}', [IncriptionsController::class,'delete'])->name('inscripciones.delete');
 Route::get('inscripciones/cambio/{id_control}/{nombre_asig}/{carrera}', [IncriptionsController::class,'cambio'])->name('inscripciones.cambio');
+Route::get('inscripciones/adicionar', [IncriptionsController::class,'adicionar'])->name('inscripciones.adicion');
 Route::post('inscripciones/update-seccion', [IncriptionsController::class,'seccion_ca'])->name('inscripciones.update_seccion');
+Route::post('inscripciones/save_adicion', [IncriptionsController::class,'save_adicion'])->name('inscripciones.save_adicion');
+
 
 //la primera es la direccion de la pagina \about la segunda es el nombre del archivo respectivo vue que esta dentro de la carpeta pages
 Route::inertia('about','about');
